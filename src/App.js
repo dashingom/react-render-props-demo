@@ -1,11 +1,12 @@
 import React from 'react';
 import './App.css';
-import MouseTracker from './components/MouseTracker';
+//import MouseTracker from './components/MouseTracker';
+import CustomModal from './components/CustomModal';
 
 function App() {
   return (
     <div className="App">
-      <MouseTracker />
+      <CustomModal />
     </div>
   );
 }
