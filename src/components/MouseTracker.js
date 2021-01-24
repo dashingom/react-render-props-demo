@@ -4,7 +4,7 @@ import Cat from './Cat';
 
 class MouseTracker extends React.Component {
   render() {
-    return (
+    return (      
       <div>
         <Mouse render={mouse => (
           <Cat mouse={mouse} />

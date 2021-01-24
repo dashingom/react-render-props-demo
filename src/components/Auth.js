@@ -1,22 +1,24 @@
 import React from 'react';
-import { Button, Modal, ModalBody, ModalHeader, Spinner } from 'reactstrap';
+import {
+  Redirect
+} from "react-router-dom";
+import { Modal, ModalBody, ModalHeader, Spinner } from 'reactstrap';
 
-class CustomModal extends React.Component {
+class Auth extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      modal: false
+      modal: true,
+      isAuthenticated: false
     };
 
     this.toggle = this.toggle.bind(this);
   }
 
   componentDidMount() {
-    /* setInterval(() => {
-      this.setState({
-        modal: false
-      })
-    }, 3000); */
+    fakeAuth.authenticate(() => {
+      this.setState({ isAuthenticated: true, modal: false });
+    });
   }
 
   toggle() {
@@ -26,9 +28,17 @@ class CustomModal extends React.Component {
   }
 
   render() {
+    console.log(this.props);
+    const { isAuthenticated } = this.state;
+    const from = this.props.match.path;
+
+    if (isAuthenticated) {
+      return (
+        <Redirect to={from} />
+      )
+    }
     return (
       <div>
-        <Button color="danger" onClick={this.toggle}>Launch Modal</Button>
         <Modal backdrop={false} isOpen={this.state.modal}>
           <ModalHeader><Spinner color="primary" /> PingId Authentication</ModalHeader>
           <ModalBody>
@@ -40,11 +50,21 @@ class CustomModal extends React.Component {
                 target="_blank" rel="noopener noreferrer"> PingID FAQ</a>
             </p>
           </ModalBody>
-
         </Modal>
       </div>
     );
   }
 }
 
-export default CustomModal;
+export const fakeAuth = {
+  authenticate(cb) {
+    localStorage.setItem('isAuthenticated', true);
+    setTimeout(cb, 3000); // fake async
+  },
+  signout(cb) {
+    localStorage.setItem('isAuthenticated', false);
+    setTimeout(cb, 100);
+  }
+};
+
+export default Auth;
